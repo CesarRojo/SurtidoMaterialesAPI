@@ -6,14 +6,15 @@ const getAllLines = async (req, res) => {
         const lines = await lineaService.getAllLines();
         res.json(lines);
     } catch (error) {
-        res.satus(500).json({ error: '<<Failed to fetch lines>>' });
+        res.status(500).json({ error: '<<Failed to fetch lines>>' });
     }
 }
 
 //Get line by id
 const getLineById = async (req, res) => {
     try {
-        const line = await lineaService.getLineById(req.params.id);
+        const id = parseInt(req.params.id); //Se parsea a un int el req.params.id porque lo recibe como un string
+        const line = await lineaService.getLineById(id); //Se usa la const parseada
         if (line) {
             res.json(line);
         }else{
@@ -27,7 +28,7 @@ const getLineById = async (req, res) => {
 //Create line
 const createLine = async (req, res) => {
     try {
-        const line = lineaService.createLine(req.body);
+        const line = lineaService.createLine(req.body); //Se usa req.body y NO req.params.body
         res.status(201).json(line);
     } catch (error) {
         res.status(400).json({ error: '<<Failed to create line>>' })
@@ -37,7 +38,8 @@ const createLine = async (req, res) => {
 //Update line
 const updateLine = async (req, res) => {
     try {
-        const updatedLine = await lineaService.updateLine(req.params.id, req.params.body);
+        const id = parseInt(req.params.id);
+        const updatedLine = await lineaService.updateLine(id, req.body);
         res.json(updatedLine);
     } catch (error) {
         res.status(400).json({ error: '<<Failed to update line>>' });
@@ -47,7 +49,8 @@ const updateLine = async (req, res) => {
 //Delete line
 const deleteLine = async (req, res) => {
     try {
-        const deletedLine = await lineaService.deleteLine(req.params.id);
+        const id = parseInt(req.params.id);
+        const deletedLine = await lineaService.deleteLine(id);
         res.status(204).send();
     } catch (error) {
         res.status(400).json({ error: '<<Failed to delete line>>' });

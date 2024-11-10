@@ -7,7 +7,6 @@ const getAllLines = async () => {
 
 //Get line by id
 const getLineById = async (id) => {
-    console.log('El idLinea buscado es: ', idLinea);
     return await prisma.linea.findUnique({ where: { idLinea: id } });
 };
 
@@ -18,12 +17,12 @@ const createLine = async (data) => {
 
 //Update line
 const updateLine = async (id, data) => {
-    return await prisma.linea.update({ where: { id: id }, data });
+    return await prisma.linea.update({ where: { idLinea: id }, data }); //Se utiliza idLinea porque asi es como está en el schema de prisma
 };
 
 //Delete line
 const deleteLine = async (id) => {
-    return await prisma.linea.delete({ where: { id: id } });
+    return await prisma.linea.delete({ where: { idLinea: id } });
 };
 
 module.exports = {
