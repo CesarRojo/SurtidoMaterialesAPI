@@ -39,7 +39,7 @@ const createSolicitudes = async (req, res) => {
 const updateSolicitudes = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
-        const updatedSolicitudes = await solicitudesService.updateMaterial(id, req.body);
+        const updatedSolicitudes = await solicitudesService.updateSolicitudes(id, req.body);
         res.json(updatedSolicitudes);
     } catch (error) {
         res.status(400).json({ error: '<<Failed to update solicitudes>>' });

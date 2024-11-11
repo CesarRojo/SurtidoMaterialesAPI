@@ -2,7 +2,16 @@ const prisma = require('../prisma/prismaClient');
 
 //Get all solicitudes
 const getAllSolicitudes = async () => {
-    return await prisma.solicitudes.findMany();
+    return await prisma.solicitudes.findMany({
+        include: {
+            area: {
+                include: {
+                    linea: true,
+                }
+            },
+            material: true,
+        },
+    });
 };
 
 //Get solicitudes by id
