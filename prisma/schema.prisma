@@ -16,18 +16,15 @@ datasource db {
 model Linea {
   idLinea     Int     @id @default(autoincrement())
   nombre      String  @db.VarChar(100)
-  materialista String? @db.VarChar(100)
-  fecha       DateTime?
+  IdentificadorLinea Int
 
-  areas       Area[]
+  solicitudes Solicitudes[]
 }
 
 model Area {
   idArea     Int     @id @default(autoincrement())
   nombre      String  @db.VarChar(100)
-  idLinea     Int?
 
-  linea       Linea?  @relation(fields: [idLinea], references: [idLinea])
   solicitudes Solicitudes[]
 }
 
@@ -53,10 +50,13 @@ model Solicitudes {
   idSolicitud     Int     @id @default(autoincrement())
   idArea          Int?
   idMaterial      Int?
+  idLinea         Int?
   cantidad        Int
+  tipoCantidad    String @db.VarChar(20)
   estado          String  @db.VarChar(50)
   fechaSolicitud  DateTime?
 
   area            Area?   @relation(fields: [idArea], references: [idArea])
+  linea           Linea?   @relation(fields: [idLinea], references: [idLinea])
   material        Material? @relation(fields: [idMaterial], references: [idMaterial])
 }

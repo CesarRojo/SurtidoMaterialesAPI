@@ -4,11 +4,8 @@ const prisma = require('../prisma/prismaClient');
 const getAllSolicitudes = async () => {
     return await prisma.solicitudes.findMany({
         include: {
-            area: {
-                include: {
-                    linea: true,
-                }
-            },
+            area: true,
+            linea: true,
             material: true,
         },
     });
@@ -17,6 +14,22 @@ const getAllSolicitudes = async () => {
 //Get solicitudes by id
 const getSolicitudesById = async (id) => {
     return await prisma.solicitudes.findUnique({ where: { idSolicitud: id } });
+};
+
+//Get solicitudes by idLinea
+const getSolicitudesByIdLinea = async (id) => {
+    return await prisma.solicitudes.findMany({ 
+        where: { 
+            linea: {
+                IdentificadorLinea: id,
+            }
+        },
+        include: {
+            area: true,
+            linea: true,
+            material: true,
+        },
+     });
 };
 
 //Create solicitudes
@@ -37,6 +50,7 @@ const deleteSolicitudes = async (id) => {
 module.exports = {
     getAllSolicitudes,
     getSolicitudesById,
+    getSolicitudesByIdLinea,
     createSolicitudes,
     updateSolicitudes,
     deleteSolicitudes,

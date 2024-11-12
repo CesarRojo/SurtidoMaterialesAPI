@@ -21,7 +21,22 @@ const getSolicitudesById = async (req, res) => {
             res.status(404).json({ error: '<<Solicitudes not found>>' });
         }
     } catch (error) {
-        res.status(500).json({ error: '<<Failed to fetch solicitudes>>' });
+        res.status(500).json({ error: '<<Failed to fetch solicitudes by id>>' });
+    }
+};
+
+//Get solicitudes by idArea
+const getSolicitudesByIdLinea = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        const solicitudes = await solicitudesService.getSolicitudesByIdLinea(id);
+        if (solicitudes) {
+            res.json(solicitudes);
+        }else{
+            res.status(404).json({ error: '<<Solicitudes not found>>' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: '<<Failed to fetch solicitudes by idArea>>' })
     }
 };
 
@@ -60,6 +75,7 @@ const deleteSolicitudes = async (req, res) => {
 module.exports = {
     getAllSolicitudes,
     getSolicitudesById,
+    getSolicitudesByIdLinea,
     createSolicitudes,
     updateSolicitudes,
     deleteSolicitudes,

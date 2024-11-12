@@ -6,6 +6,7 @@ const router = express.Router();
 //Routes
 router.get('/', solicitudesController.getAllSolicitudes);
 router.get('/:id', solicitudesController.getSolicitudesById);
+router.get('/area/:id', solicitudesController.getSolicitudesByIdLinea);
 router.post('/', solicitudesController.createSolicitudes);
 router.put('/:id', solicitudesController.updateSolicitudes);
 router.delete('/:id', solicitudesController.deleteSolicitudes);
