@@ -30,7 +30,7 @@ model Area {
 
 model Material {
   idMaterial Int     @id @default(autoincrement())
-  numero      Int
+  numero      String @db.VarChar(50)
   nombre      String  @db.VarChar(100)
 
   ubicaciones UbicacionRack[]
@@ -55,6 +55,7 @@ model Solicitudes {
   tipoCantidad    String @db.VarChar(20)
   estado          String  @db.VarChar(50)
   fechaSolicitud  DateTime?
+  Turno           String @db.Char(1)
 
   area            Area?   @relation(fields: [idArea], references: [idArea])
   linea           Linea?   @relation(fields: [idLinea], references: [idLinea])
