@@ -18,22 +18,10 @@ const getSolicitudesById = async (id) => {
 
 //Get solicitudes by idLinea
 const getSolicitudesByIdLinea = async (id) => {
-    const today = new Date();
-    // Establecer la hora a 00:00:00 para comparar solo la fecha
-    today.setHours(0, 0, 0, 0);
-
-    // Crear una nueva fecha para el final del día
-    const endOfDay = new Date(today);
-    endOfDay.setHours(23, 59, 59, 999);
-
     return await prisma.solicitudes.findMany({ 
         where: { 
             linea: {
                 IdentificadorLinea: id,
-            },
-            fechaSolicitud: { 
-                gte: today, // Mayor o igual que el inicio del día
-                lte: endOfDay // Menor o igual que el final del día
             }
         },
         include: {
@@ -41,7 +29,7 @@ const getSolicitudesByIdLinea = async (id) => {
             linea: true,
             material: true,
         },
-    });
+     });
 };
 
 //Create solicitudes
