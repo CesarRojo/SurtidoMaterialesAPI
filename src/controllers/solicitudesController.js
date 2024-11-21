@@ -25,18 +25,20 @@ const getSolicitudesById = async (req, res) => {
     }
 };
 
-//Get solicitudes by idArea
+//Get solicitudes by idLinea
 const getSolicitudesByIdLinea = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
-        const solicitudes = await solicitudesService.getSolicitudesByIdLinea(id);
+        const fechaFiltro = req.query.fecha // Obtener el filtro de fecha de los parámetros de consulta
+        console.log("fecha controller", fechaFiltro);
+        const solicitudes = await solicitudesService.getSolicitudesByIdLinea(id, fechaFiltro);
         if (solicitudes) {
             res.json(solicitudes);
         }else{
             res.status(404).json({ error: '<<Solicitudes not found>>' });
         }
     } catch (error) {
-        res.status(500).json({ error: '<<Failed to fetch solicitudes by idArea>>' })
+        res.status(500).json({ error: '<<Failed to fetch solicitudes by idLinea>>' })
     }
 };
 
