@@ -10,6 +10,14 @@ const getMaterialById = async (id) => {
     return await prisma.material.findUnique({ where: { idMaterial: id } });
 };
 
+const getOrderedMaterials = async () => {
+    return await prisma.material.findMany({
+        orderBy: {
+            numero: 'asc',
+        },
+    });
+};
+
 //Create line
 const createMaterial = async (data) => {
     return await prisma.material.create({ data });
@@ -31,4 +39,5 @@ module.exports = {
     createMaterial,
     updateMaterial,
     deleteMaterial,
+    getOrderedMaterials,
 };

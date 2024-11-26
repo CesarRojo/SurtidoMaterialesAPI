@@ -10,6 +10,15 @@ const getAllMaterials = async (req, res) => {
     }
 }
 
+const getOrderedMaterials = async (req, res) => {
+    try {
+        const material = await materialService.getOrderedMaterials();
+        res.json(material);
+    } catch (error) {
+        res.status(500).json({ error: '<<Failed to fetch ordered materials>>' });
+    }
+}
+
 //Get material by id
 const getMaterialById = async (req, res) => {
     try {
@@ -63,4 +72,5 @@ module.exports = {
     createMaterial,
     updateMaterial,
     deleteMaterial,
+    getOrderedMaterials,
 };

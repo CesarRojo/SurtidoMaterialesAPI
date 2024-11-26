@@ -30,7 +30,6 @@ const getSolicitudesByIdLinea = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
         const fechaFiltro = req.query.fecha // Obtener el filtro de fecha de los parámetros de consulta
-        console.log("fecha controller", fechaFiltro);
         const solicitudes = await solicitudesService.getSolicitudesByIdLinea(id, fechaFiltro);
         if (solicitudes) {
             res.json(solicitudes);
