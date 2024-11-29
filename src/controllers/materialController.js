@@ -12,8 +12,14 @@ const getAllMaterials = async (req, res) => {
 
 const getOrderedMaterials = async (req, res) => {
     try {
-        const material = await materialService.getOrderedMaterials();
-        res.json(material);
+        //SE USA req.params CUANDO EL VALOR VIENE EN LA URL, CUANDO VIENE POR PARAMS SE USA req.query
+        const id = parseInt(req.query.id); //Se parsea a un int el req.params.id porque lo recibe como un string
+        const material = await materialService.getOrderedMaterials(id); //Se usa la const parseada
+        if (material) {
+            res.json(material);
+        }else{
+            res.status(404).json({ error: '<<Material not found>>' });
+        }
     } catch (error) {
         res.status(500).json({ error: '<<Failed to fetch ordered materials>>' });
     }

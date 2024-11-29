@@ -6,7 +6,9 @@ const getAllSolicitudes = async () => {
         include: {
             area: true,
             linea: true,
-            material: true,
+            material: { include: {
+                rack: true,
+            }},
         },
     });
 };
@@ -40,7 +42,9 @@ const getSolicitudesByIdLinea = async (id, fechaFiltro) => {
         include: {
             area: true,
             linea: true,
-            material: true,
+            material: { include: {
+                rack: true,
+            }},
         },
     });
 

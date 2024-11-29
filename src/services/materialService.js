@@ -10,8 +10,11 @@ const getMaterialById = async (id) => {
     return await prisma.material.findUnique({ where: { idMaterial: id } });
 };
 
-const getOrderedMaterials = async () => {
+const getOrderedMaterials = async (id) => {
     return await prisma.material.findMany({
+        where: {
+            idLinea: id,
+        },
         orderBy: {
             numero: 'asc',
         },
@@ -25,7 +28,7 @@ const createMaterial = async (data) => {
 
 //Update line
 const updateMaterial = async (id, data) => {
-    return await prisma.material.update({ where: { idMaterial: id }, data }); //Se utiliza idLinea porque asi es como está en el schema de prisma
+    return await prisma.material.update({ where: { idMaterial: id }, data });
 };
 
 //Delete line

@@ -17,8 +17,10 @@ model Linea {
   idLinea     Int     @id @default(autoincrement())
   nombre      String  @db.VarChar(100)
   IdentificadorLinea Int
+  Floor       String? @db.VarChar(20)
 
   solicitudes Solicitudes[]
+  material    Material[]
 }
 
 model Area {
@@ -32,18 +34,19 @@ model Material {
   idMaterial Int     @id @default(autoincrement())
   numero      String @db.VarChar(50)
   nombre      String  @db.VarChar(100)
+  idRack      Int?
+  idLinea     Int?
 
-  ubicaciones UbicacionRack[]
   solicitudes Solicitudes[]
+  rack        UbicacionRack? @relation(fields: [idRack], references: [idRack])
+  linea       Linea? @relation(fields: [idLinea], references: [idLinea])
 }
 
 model UbicacionRack {
   idRack      Int     @id @default(autoincrement())
   nombre      String  @db.VarChar(100)
-  digitos     Int?
-  idMaterial  Int?
-
-  material    Material? @relation(fields: [idMaterial], references: [idMaterial])
+  
+  material Material[]
 }
 
 model Solicitudes {
@@ -58,6 +61,6 @@ model Solicitudes {
   Turno           String @db.Char(1)
 
   area            Area?   @relation(fields: [idArea], references: [idArea])
-  linea           Linea?   @relation(fields: [idLinea], references: [idLinea])
+  linea           Linea?   @relation(fields: [idLinea], references: [idLinea], onDelete: NoAction, onUpdate: NoAction)
   material        Material? @relation(fields: [idMaterial], references: [idMaterial])
 }
