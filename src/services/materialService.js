@@ -2,7 +2,11 @@ const prisma = require('../prisma/prismaClient');
 
 //Get all lines
 const getAllMaterials = async () => {
-    return await prisma.material.findMany();
+    return await prisma.material.findMany({ 
+        include: {
+            rack: true,
+        }
+    });
 };
 
 //Get line by id
@@ -14,6 +18,17 @@ const getOrderedMaterials = async (id) => {
     return await prisma.material.findMany({
         where: {
             idLinea: id,
+        },
+        orderBy: {
+            numero: 'asc',
+        },
+    });
+};
+
+const getMaterialByFloor = async (floor) => {
+    return await prisma.material.findMany({
+        where: {
+            floor: floor,
         },
         orderBy: {
             numero: 'asc',
@@ -43,4 +58,5 @@ module.exports = {
     updateMaterial,
     deleteMaterial,
     getOrderedMaterials,
+    getMaterialByFloor,
 };

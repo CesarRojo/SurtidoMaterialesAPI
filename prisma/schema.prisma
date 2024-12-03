@@ -36,6 +36,7 @@ model Material {
   nombre      String  @db.VarChar(100)
   idRack      Int?
   idLinea     Int?
+  floor       String? @db.VarChar(20)
 
   solicitudes Solicitudes[]
   rack        UbicacionRack? @relation(fields: [idRack], references: [idRack])

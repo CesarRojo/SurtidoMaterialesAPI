@@ -25,6 +25,21 @@ const getOrderedMaterials = async (req, res) => {
     }
 }
 
+const getMaterialByFloor = async (req, res) => {
+    try {
+        //SE USA req.params CUANDO EL VALOR VIENE EN LA URL, CUANDO VIENE POR PARAMS SE USA req.query
+        const floor = req.query.floor;
+        const material = await materialService.getMaterialByFloor(floor); //Se usa la const parseada
+        if (material) {
+            res.json(material);
+        }else{
+            res.status(404).json({ error: '<<Material not found>>' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: '<<Failed to fetch materials by floor>>' });
+    }
+}
+
 //Get material by id
 const getMaterialById = async (req, res) => {
     try {
@@ -79,4 +94,5 @@ module.exports = {
     updateMaterial,
     deleteMaterial,
     getOrderedMaterials,
+    getMaterialByFloor,
 };

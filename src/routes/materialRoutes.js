@@ -6,6 +6,7 @@ const router = express.Router();
 //Routes
 router.get('/', materialController.getAllMaterials);
 router.get('/ordered', materialController.getOrderedMaterials);
+router.get('/floor', materialController.getMaterialByFloor);
 router.get('/:id', materialController.getMaterialById);
 router.post('/', materialController.createMaterial);
 router.put('/:id', materialController.updateMaterial);
