@@ -22,7 +22,7 @@ const getSolicitudesById = async (id) => {
 const getSolicitudesByIdLinea = async (id, fechaFiltro) => {
     const whereClause = {
         linea: {
-            IdentificadorLinea: id,
+            idLinea: id,
         },
     };
 

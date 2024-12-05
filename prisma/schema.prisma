@@ -16,7 +16,7 @@ datasource db {
 model Linea {
   idLinea     Int     @id @default(autoincrement())
   nombre      String  @db.VarChar(100)
-  IdentificadorLinea Int
+  IdentificadorLinea Int?
   Floor       String? @db.VarChar(20)
 
   solicitudes Solicitudes[]
