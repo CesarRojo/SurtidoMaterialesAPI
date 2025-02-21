@@ -8,7 +8,18 @@ const getAllSolicitudes = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: '<<Failed to fetch solicitudes>>' });
     }
-}
+};
+
+//Get all solicitudes by fecha
+const getAllSolicitudesByFecha = async (req, res) => {
+    try {
+        const fechaFiltro = req.query.fecha; // Obtener el filtro de fecha de los parámetros de consulta
+        const solicitudes = await solicitudesService.getAllSolicitudesByFecha(fechaFiltro);
+        res.json(solicitudes);
+    } catch (error) {
+        res.status(500).json({ error: '<<Failed to fetch solicitudes by fecha>>' });
+    }
+};
 
 //Get solicitudes by id
 const getSolicitudesById = async (req, res) => {
@@ -75,6 +86,7 @@ const deleteSolicitudes = async (req, res) => {
 
 module.exports = {
     getAllSolicitudes,
+    getAllSolicitudesByFecha,
     getSolicitudesById,
     getSolicitudesByIdLinea,
     createSolicitudes,

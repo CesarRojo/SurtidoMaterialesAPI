@@ -5,6 +5,7 @@ const router = express.Router();
 
 //Routes
 router.get('/', solicitudesController.getAllSolicitudes);
+router.get('/fecha', solicitudesController.getAllSolicitudesByFecha);
 router.get('/:id', solicitudesController.getSolicitudesById);
 router.get('/area/:id', solicitudesController.getSolicitudesByIdLinea);
 router.post('/', solicitudesController.createSolicitudes);

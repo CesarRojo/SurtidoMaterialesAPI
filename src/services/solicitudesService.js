@@ -13,6 +13,28 @@ const getAllSolicitudes = async () => {
     });
 };
 
+//Get all solicitudes by fecha
+const getAllSolicitudesByFecha = async (fechaFiltro) => {
+    const startOfDay = new Date(fechaFiltro);
+    const endOfDay = new Date(new Date(fechaFiltro).setDate(startOfDay.getDate() + 1));
+
+    return await prisma.solicitudes.findMany({
+        where: {
+            fechaSolicitud: {
+                gte: startOfDay, // Mayor o igual a la fecha proporcionada
+                lt: endOfDay,    // Menor a la fecha siguiente
+            },
+        },
+        include: {
+            area: true,
+            linea: true,
+            material: { include: {
+                rack: true,
+            }},
+        },
+    });
+};
+
 //Get solicitudes by id
 const getSolicitudesById = async (id) => {
     return await prisma.solicitudes.findUnique({ where: { idSolicitud: id } });
@@ -68,6 +90,7 @@ const deleteSolicitudes = async (id) => {
 
 module.exports = {
     getAllSolicitudes,
+    getAllSolicitudesByFecha,
     getSolicitudesById,
     getSolicitudesByIdLinea,
     createSolicitudes,
