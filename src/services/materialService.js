@@ -36,6 +36,16 @@ const getMaterialByFloor = async (floor) => {
     });
 };
 
+const getMaterialByFloor2 = async (floor, numero) => {
+    const materials = await prisma.material.findMany({
+        where: {
+            floor: floor,
+        },
+    });
+
+    return materials.find(material => material.numero == numero);
+};
+
 //Create line
 const createMaterial = async (data) => {
     return await prisma.material.create({ data });
@@ -59,4 +69,5 @@ module.exports = {
     deleteMaterial,
     getOrderedMaterials,
     getMaterialByFloor,
+    getMaterialByFloor2
 };

@@ -40,6 +40,21 @@ const getMaterialByFloor = async (req, res) => {
     }
 }
 
+const getMaterialByFloor2 = async (req, res) => {
+    try {
+        const floor = req.query.floor;
+        const numero = req.query.numero;
+        const material = await materialService.getMaterialByFloor2(floor, numero);
+        if (material) {
+            res.json(material);
+        } else {
+            res.status(404).json({ error: '<<Material not found>>' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: '<<Failed to fetch materials by floor and numero>>' });
+    }
+};
+
 //Get material by id
 const getMaterialById = async (req, res) => {
     try {
@@ -95,4 +110,5 @@ module.exports = {
     deleteMaterial,
     getOrderedMaterials,
     getMaterialByFloor,
+    getMaterialByFloor2
 };
