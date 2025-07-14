@@ -13,8 +13,12 @@ const getAllSolicitudes = async (req, res) => {
 //Get all solicitudes by fecha
 const getAllSolicitudesByFecha = async (req, res) => {
     try {
-        const fechaFiltro = req.query.fecha; // Obtener el filtro de fecha de los parámetros de consulta
-        const solicitudes = await solicitudesService.getAllSolicitudesByFecha(fechaFiltro);
+        // Obtener el filtro de fecha de los parámetros de consulta
+        // const fechaInicio = req.query.fechaInicio; 
+        // const fechaFin = req.query.fechaFin; 
+        // const fechaInicio = new Date(req.query.fechaInicio);  
+        // const fechaFin = new Date(req.query.fechaFin);
+        const solicitudes = await solicitudesService.getAllSolicitudesByFecha();
         res.json(solicitudes);
     } catch (error) {
         res.status(500).json({ error: '<<Failed to fetch solicitudes by fecha>>' });
@@ -40,8 +44,10 @@ const getSolicitudesById = async (req, res) => {
 const getSolicitudesByIdLinea = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
-        const fechaFiltro = req.query.fecha // Obtener el filtro de fecha de los parámetros de consulta
-        const solicitudes = await solicitudesService.getSolicitudesByIdLinea(id, fechaFiltro);
+        // Obtener el filtro de fecha de los parámetros de consulta
+        // const fechaInicio = new Date(req.query.fechaInicio);  
+        // const fechaFin = new Date(req.query.fechaFin);  
+        const solicitudes = await solicitudesService.getSolicitudesByIdLinea(id);
         if (solicitudes) {
             res.json(solicitudes);
         }else{

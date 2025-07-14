@@ -1,4 +1,5 @@
 const materialService = require('../services/materialService');
+const fs = require('fs');
 
 //Get all materials
 const getAllMaterials = async (req, res) => {
@@ -38,7 +39,7 @@ const getMaterialByFloor = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: '<<Failed to fetch materials by floor>>' });
     }
-}
+};
 
 const getMaterialByFloor2 = async (req, res) => {
     try {
@@ -102,6 +103,27 @@ const deleteMaterial = async (req, res) => {
     }
 }
 
+//Procesamiento de excel para actualizar la ubicacion de los materiales
+const bulkUpdatesRack = async (req, res) => {
+    try {
+        const filePath = req.file.path;
+        const result = await materialService.updateRacksFromExcel(filePath);
+
+        fs.unlinkSync(filePath); //Borra el archivo temporal
+        if (result.errores.length > 0) {
+            return res.status(400).json({
+                message: 'Se encontraron algunos errores',
+                errores: result.errores,
+            });
+        }
+
+        res.status(200).json({ message: 'Actualizacion exitosa' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error en el servidor' });
+    }
+}
+
 module.exports = {
     getAllMaterials,
     getMaterialById,
@@ -110,5 +132,6 @@ module.exports = {
     deleteMaterial,
     getOrderedMaterials,
     getMaterialByFloor,
-    getMaterialByFloor2
+    getMaterialByFloor2,
+    bulkUpdatesRack,
 };
