@@ -1,4 +1,5 @@
 const solicitudesService = require('../services/solicitudesService');
+const { getIO } = require('../socket');
 
 //Get all solicitudes
 const getAllSolicitudes = async (req, res) => {
@@ -13,11 +14,6 @@ const getAllSolicitudes = async (req, res) => {
 //Get all solicitudes by fecha
 const getAllSolicitudesByFecha = async (req, res) => {
     try {
-        // Obtener el filtro de fecha de los parámetros de consulta
-        // const fechaInicio = req.query.fechaInicio; 
-        // const fechaFin = req.query.fechaFin; 
-        // const fechaInicio = new Date(req.query.fechaInicio);  
-        // const fechaFin = new Date(req.query.fechaFin);
         const solicitudes = await solicitudesService.getAllSolicitudesByFecha();
         res.json(solicitudes);
     } catch (error) {
@@ -44,9 +40,6 @@ const getSolicitudesById = async (req, res) => {
 const getSolicitudesByIdLinea = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
-        // Obtener el filtro de fecha de los parámetros de consulta
-        // const fechaInicio = new Date(req.query.fechaInicio);  
-        // const fechaFin = new Date(req.query.fechaFin);  
         const solicitudes = await solicitudesService.getSolicitudesByIdLinea(id);
         if (solicitudes) {
             res.json(solicitudes);
@@ -63,6 +56,9 @@ const createSolicitudes = async (req, res) => {
     try {
         const solicitudes = solicitudesService.createSolicitudes(req.body); //Se usa req.body y NO req.params.body
         res.status(201).json(solicitudes);
+
+        const io = getIO();
+        io.emit('solicitudes_actualizadas', { message: 'Nueva solicitud creada' });
     } catch (error) {
         res.status(400).json({ error: '<<Failed to create solicitudes>>' })
     }
@@ -74,6 +70,9 @@ const updateSolicitudes = async (req, res) => {
         const id = parseInt(req.params.id);
         const updatedSolicitudes = await solicitudesService.updateSolicitudes(id, req.body);
         res.json(updatedSolicitudes);
+
+        const io = getIO();
+        io.emit('solicitudes_actualizadas', { message: 'Nueva solicitud creada' });
     } catch (error) {
         res.status(400).json({ error: '<<Failed to update solicitudes>>' });
     }

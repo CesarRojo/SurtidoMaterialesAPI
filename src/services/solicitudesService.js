@@ -101,7 +101,7 @@ const getSolicitudesByIdLinea = async (id) => {
       fechaInicio = `${año}-${mes}-${dia}T16:31:00.000Z`;
       fechaFin = `${año}-${mes}-${dia}T23:59:59.000Z`;
     }else if(hour < 2){
-      fechaFin = `${año}-${mes}-${dia}T02:00:00.000Z`; //Las 2am del dia actual
+      fechaFin = `${año}-${mes}-${dia}T02:00:00.000Z`; // Las 2am del dia actual
       // Obtener el día anterior correctamente
       const diaAnteriorDate = new Date(serverDate);
       diaAnteriorDate.setDate(diaAnteriorDate.getDate() - 1);
