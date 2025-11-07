@@ -1,4 +1,5 @@
 const solicitudesService = require('../services/solicitudesService');
+const prisma = require('../prisma/prismaClient');
 const { getIO } = require('../socket');
 
 //Get all solicitudes
@@ -10,6 +11,8 @@ const getAllSolicitudes = async (req, res) => {
         res.status(500).json({ error: '<<Failed to fetch solicitudes>>' });
     }
 };
+
+
 
 //Get all solicitudes by fecha
 const getAllSolicitudesByFecha = async (req, res) => {
@@ -89,6 +92,107 @@ const deleteSolicitudes = async (req, res) => {
     }
 }
 
+const getSolicitudesFiltered = async (req, res) => {
+  try {
+    // Recibimos filtros y paginación por query params
+    const {
+      fechaInicio,
+      fechaFin,
+      turno,
+      idLinea,
+      numeroMaterial,
+      nombreMaterial,
+      page = 1,
+      pageSize = 10,
+    } = req.query;
+
+    // Construimos el filtro dinámico
+    const where = {
+      AND: [],
+    };
+
+    if (fechaInicio) {
+      where.AND.push({
+        fechaSolicitud: {
+          gte: new Date(fechaInicio),
+        },
+      });
+    }
+
+    if (fechaFin) {
+      let fechaFin2 = new Date(fechaFin);
+      fechaFin2.setUTCHours(23, 59, 59, 999);
+      where.AND.push({
+        fechaSolicitud: {
+          lte: new Date(fechaFin2),
+        },
+      });
+    }
+
+    if (turno) {
+      where.AND.push({
+        Turno: turno,
+      });
+    }
+
+    if (idLinea) {
+      where.AND.push({
+        idLinea: Number(idLinea),
+      });
+    }
+
+    if (numeroMaterial || nombreMaterial) {
+      where.AND.push({
+        material: {
+          ...(numeroMaterial && {
+            numero: {
+              contains: numeroMaterial,
+            },
+          }),
+          ...(nombreMaterial && {
+            nombre: {
+              contains: nombreMaterial,
+            },
+          }),
+        },
+      });
+    }
+
+    // Contar total para paginación
+    const total = await prisma.solicitudes.count({ where });
+
+    // Obtener datos con paginación
+    const solicitudes = await prisma.solicitudes.findMany({
+      where,
+      include: {
+        area: true,
+        linea: true,
+        material: {
+          include: {
+            rack: true,
+          },
+        },
+      },
+      skip: (page - 1) * pageSize,
+      take: Number(pageSize),
+      orderBy: {
+        fechaSolicitud: 'desc',
+      },
+    });
+
+    res.json({
+      data: solicitudes,
+      total,
+      page: Number(page),
+      pageSize: Number(pageSize),
+      totalPages: Math.ceil(total / pageSize),
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error fetching filtered solicitudes' });
+  }
+};
+
 module.exports = {
     getAllSolicitudes,
     getAllSolicitudesByFecha,
@@ -97,4 +201,5 @@ module.exports = {
     createSolicitudes,
     updateSolicitudes,
     deleteSolicitudes,
+    getSolicitudesFiltered,
 };
